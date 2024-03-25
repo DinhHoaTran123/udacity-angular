@@ -1,0 +1,32 @@
+<div *ngIf="cartProducts && cartProducts.length > 0; else noCart" class="cart-container">
+  <div class="cart-items">
+    <div *ngFor="let cartProduct of cartProducts" class="cart-item">
+      <img [src]="cartProduct.url" [alt]="cartProduct.name" class="product-image">
+      <div class="product-details">
+        <h3 class="product-name">{{ cartProduct.name }}</h3>
+        <p class="product-price">Price: ${{ cartProduct.price }}</p>
+        <!-- Quantity Selector -->
+        <label for="product-quantity-{{cartProduct.id}}" class="quantity-label">Quantity:</label>
+        <select [(ngModel)]="cartProduct.option" (change)="selectChange(cartProduct.id, $event)"
+                id="product-quantity-{{cartProduct.id}}" class="quantity-select">
+          <option *ngFor="let count of productCount" [value]="count">
+            {{ count }}
+          </option>
+        </select>
+        <!-- Remove Button -->
+        <button (click)="removeCart(cartProduct.id)" class="remove-btn" aria-label="Remove {{cartProduct.name}}">
+          Remove
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="total-price">Total: ${{ totalPrice }}</div>
+  <div class="checkout-form">
+    <app-create-form (checkoutSuccess)="checkoutSuccess($event)"></app-create-form>
+  </div>
+</div>
+<ng-template #noCart>
+  <div class="empty-cart">
+    Your cart is empty. <a routerLink="/products" class="add-products-link">Browse products</a> to add them to your cart.
+  </div>
+</ng-template>

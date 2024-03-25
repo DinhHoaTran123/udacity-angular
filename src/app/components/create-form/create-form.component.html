@@ -1,0 +1,27 @@
+<form class="form-margin" #form="ngForm" (ngSubmit)="form.valid && onSubmit()">
+  <h1>Checkout</h1>
+
+  <label for="firstName">Full Name:</label><br />
+  <input type="text" id="firstName" name="firstName" required minlength="9" placeholder="Enter Full Name"
+         [(ngModel)]="firstName" #firstNameInput="ngModel" ngModelOptions="{updateOn: 'blur'}">
+  <div *ngIf="firstNameInput.invalid && firstNameInput.touched" class="alert alert-danger">
+    Full name is required and must be at least 9 characters.
+  </div>
+
+  <label for="address">Address:</label><br />
+  <input type="text" id="address" name="address" required minlength="10" placeholder="Enter Address"
+         [(ngModel)]="address" #addressInput="ngModel" ngModelOptions="{updateOn: 'blur'}">
+  <div *ngIf="addressInput.invalid && addressInput.touched" class="alert alert-danger">
+    An address is required and must be at least 10 characters.
+  </div>
+
+  <label for="creditCard">Credit Card Number:</label><br />
+  <input type="text" id="creditCard" name="creditCard" required minlength="16" maxlength="16"
+         placeholder="(16-digit number)" [(ngModel)]="creditCard" #creditCardInput="ngModel"
+         [class.is-invalid]="!isValidCardNumber(creditCard) && creditCardInput.touched">
+  <div *ngIf="creditCardInput.invalid && creditCardInput.touched" class="alert alert-danger">
+    A valid 16-digit credit card number is required.
+  </div>
+
+  <input [disabled]="form.invalid || !isValidCardNumber(creditCard)" type="submit" value="Submit" class="btn btn-primary" />
+</form>
